@@ -1294,6 +1294,19 @@ app.post('/api/violations', async (req, res) => {
   }
 });
 
+
+// GET: all violations
+app.get('/api/violations/all', async (req, res) => {
+  try {
+    const violations = await Violation.find().sort({ analyzedAt: -1 });
+    res.json(violations.map(formatViolation));
+  } catch (error) {
+    console.error('❌ Error fetching all violations:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 app.get('/api/videos', (req, res) => {
   fs.readdir(videosDir, (err, files) => {
     if (err) return res.status(500).json({ error: 'Failed to read videos folder' });
