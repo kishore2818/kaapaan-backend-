@@ -231,7 +231,7 @@ app.get("/api/violations", async (req, res) => {
     const data = await Violation.find().sort({ analyzedAt: -1 }).limit(100);
     res.json(data.map(formatViolation));
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -240,7 +240,7 @@ app.get("/api/violations/all", async (req, res) => {
     const data = await Violation.find().sort({ analyzedAt: -1 });
     res.json(data.map(formatViolation));
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -280,7 +280,7 @@ app.post("/api/violations", async (req, res) => {
     await newData.save();
     res.json({ message: "Saved successfully" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -293,7 +293,7 @@ app.patch("/api/violations/verify", async (req, res) => {
     );
     res.json({ message: "Verified" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -305,7 +305,7 @@ app.delete("/api/violations/:id", async (req, res) => {
     }
     res.json({ message: "Deleted" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -318,7 +318,7 @@ app.get("/api/violations/verified", async (req, res) => {
     const data = await Violation.find(query).sort({ analyzedAt: -1 });
     res.json(data.map(formatViolation));
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -331,7 +331,7 @@ app.get("/api/violations/verified-by", async (req, res) => {
     ]);
     res.json(data);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -357,7 +357,7 @@ app.get("/api/violations/verified/csv", async (req, res) => {
     res.attachment("verified_violations_report.csv");
     res.send(csv);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -369,7 +369,7 @@ app.delete("/api/violations/delete", async (req, res) => {
     if (!deletedViolation) return res.status(404).json({ message: "Violation not found" });
     res.json({ message: "Deleted" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -380,7 +380,7 @@ app.post("/api/login", async (req, res) => {
     if (user) res.json(user);
     else res.status(401).json({ message: "Invalid login" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -401,7 +401,7 @@ app.get("/api/photos", async (req, res) => {
     const data = await Violation.find({ videoFilename: videoName }).sort({ analyzedAt: -1 });
     res.json(data.map(formatViolation));
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -452,7 +452,7 @@ app.post("/api/crm-details", upload.single("image"), async (req, res) => {
     broadcast({ type: "NEW", data: record });
     res.json(record);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
