@@ -1,0 +1,9 @@
+node_modules
+output_videos
+update.js
+.env
+.env.*
+knownfaces/
+uploads/
+dist/
+.DS_Store
