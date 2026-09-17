@@ -29,6 +29,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   process.env.FRONTEND_URL,
+  process.env.FRONTEND_DOMAIN,
 ].filter(Boolean);
 
 app.use(cors({
@@ -109,13 +110,18 @@ function broadcast(data) {
 // =======================
 // MONGODB CONNECTION
 // =======================
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB Error:", err);
-  });
+const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URL;
+if (!mongoUri) {
+  console.error("❌ MongoDB Error: No connection string provided (missing MONGO_URI or MONGODB_URL)");
+} else {
+  mongoose.connect(mongoUri)
+    .then(() => {
+      console.log("✅ MongoDB Connected");
+    })
+    .catch((err) => {
+      console.error("❌ MongoDB Error:", err);
+    });
+}
 
 // =======================
 // SCHEMAS
